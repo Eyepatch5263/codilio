@@ -1,4 +1,3 @@
-import { SignedIn, SignedOut, SignInButton, SignOutButton, SignUpButton, UserButton } from '@clerk/clerk-react'
 import React from 'react'
 import Header from './_components/Header'
 import EditorPannel from './_components/EditorPannel'

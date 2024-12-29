@@ -3,7 +3,7 @@
 import { useCodeEditorStore } from '@/store/useCodeEditorStore'
 import React, { useEffect, useState } from 'react'
 import { LANGUAGE_CONFIG, defineMonacoThemes } from '../_constants/page'
-import { EditorPanelSkeleton, EditorViewSkeleton } from './EditorPanelSkeleton'
+import { EditorPanelSkeleton } from './EditorPanelSkeleton'
 import { RotateCcwIcon, ShareIcon, TypeIcon } from 'lucide-react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
@@ -14,7 +14,7 @@ import ShareSnippetDialog from './ShareSnippetDialog'
 
 
 const EditorPannel = () => {
-  const { language, setEditor, editor, setFontSize, setLanguage, fontSize, theme } = useCodeEditorStore()
+  const { language, setEditor, editor, setFontSize, fontSize, theme } = useCodeEditorStore()
   const [isSharableDialogOpen, setIsSharableDialogOpen] = useState(false)
   const clerk = useClerk()
 

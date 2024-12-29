@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Inria_Sans, Inria_Serif } from "next/font/google";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import ConvexClientProvider from "@/components/providers/ConvexClientProvider";
@@ -23,17 +22,7 @@ export const metadata: Metadata = {
   description: "Show off your code to your friends",
 };
 
-const inria = Inria_Serif({
-  display: 'swap',
-  subsets: ['latin'],
-  weight: ["300", "400", "700"]
-})
 
-const inria2=Inria_Sans({
-  display: 'swap',
-  subsets: ['latin'],
-  weight: ["300", "400", "700"]
-})
 
 export default function RootLayout({
   children,
