@@ -13,7 +13,7 @@ import HeaderProfileBtn from './HeaderProfileBtn'
 async function Header() {
     const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!)
     const user = await currentUser()
-    const convexUser = await convex.query(api.users.getUser, { userId: user!.id })
+    const convexUser = await convex.query(api.users.getUser, { userId: user?.id || "" })
     return (
         <div className='relative z-10'>
             <div className='flex items-center lg:justify-between justify-center bg-slate-800/20 border-b-gray-600 backdrop-blur-xl p-4 mb-4 rounded-xl'>
