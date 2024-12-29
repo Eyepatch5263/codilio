@@ -111,8 +111,7 @@ export const isSnippetStarred = query({
     },
     handler: async (ctx, args) => {
         const identity = await ctx.auth.getUserIdentity()
-        if (!identity) throw new ConvexError("Not Authenticated")
-
+        if (!identity) return false
         const star = await ctx.db
             .query("stars")
             .withIndex("by_user_id_and_snippet_id")
