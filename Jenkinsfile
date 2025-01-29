@@ -8,7 +8,7 @@ pipeline {
         SONAR_HOME = tool "SonarQube"
     }
     parameters {
-        string (name: "DOCKER_IMAGE_TAG", defaultValue: "", description: "Docker Image Tag")
+        string (name: "DOCKER_IMAGE_TAG", defaultValue: "", description: "Docker Image Tag of the built by the latest push.")
     }
     stages {
         stage("Starting...") {
@@ -39,7 +39,7 @@ pipeline {
                 }
             }
         }
-        stage("Trivy: FIlesystem Scan") {
+        stage("Trivy: Filesystem Scan") {
             steps {
                 script {
                     trivy_scan()
@@ -73,14 +73,14 @@ pipeline {
         stage("Build Docker Image") {
             steps {
                 script {
-                    docker_build("codilio", "latest", "eyepatch5263")
+                    docker_build("codilio-beta", "v1.0", "eyepatch5263")
                 }
             }
         }
         stage("Push to Docker Hub") {
             steps {
                 script {
-                    docker_push("codilio", "latest", "eyepatch5263")
+                    docker_push("codilio-beta", "v1.0", "eyepatch5263")
                 }
             }
         }

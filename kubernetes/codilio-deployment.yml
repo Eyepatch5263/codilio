@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codilio-deployment
+  namespace: codilio
+  labels:
+    app: codilio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codilio
+  template:
+    metadata:
+      name: codilio
+      labels:
+        app: codilio
+    spec:
+      containers:
+      - name: codilio
+        image: eyepatch5263/codilio-beta:v1.0
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+        env:
+        - name: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: codilio-secrets
+              key: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+        - name: CLERK_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: codilio-secrets
+              key: CLERK_SECRET_KEY
+        - name: CONVEX_DEPLOYMENT
+          valueFrom:
+            secretKeyRef:
+              name: codilio-secrets
+              key: CONVEX_DEPLOYMENT
+        - name: NEXT_PUBLIC_CONVEX_URL
+          valueFrom:
+            secretKeyRef:
+              name: codilio-secrets
+              key: NEXT_PUBLIC_CONVEX_URL
+        - name: CLERK_WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: codilio-secrets
+              key: CLERK_WEBHOOK_SECRET
+        - name: LEMON_SQUEEZY_WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: codilio-secrets
+              key: LEMON_SQUEEZY_WEBHOOK_SECRET
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codilio-service
+  namespace: codilio
+spec:
+  type: NodePort
+  selector:
+    app: codilio
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP
+    nodePort: 31100
+

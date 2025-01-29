@@ -1,0 +1,92 @@
+@Library("Shared") _
+
+pipeline {
+    agent {
+        label "any"
+    }
+    parameters {
+        string (name: "DOCKER_IMAGE_TAG", defaultValue: "", description: "Docker Image Tag built by the CI")
+    }
+    stages {
+        stage ("Workspace Cleanup"){
+            steps {
+                cleanWs()
+            }
+        }
+        stage("Cloning Code") {
+            steps {
+                script {
+                    clone("https://github.com/Eyepatch5263/codilio.git", "main")
+                }
+            }
+        }
+        stage("Verify: Docker Image Tags"){
+            steps {
+                script {
+                    echo "DOCKER_IMAGE_TAG: ${params.DOCKER_IMAGE_TAG}}"
+                }
+            }
+        }
+        stage("Update: Kubernetes Manifests"){
+            steps {
+            script{
+                dir("kubernetes"){
+                sh "sed -i 's/codilio-beta.*/codilio-beta:${params.DOCKER_IMAGE_TAG}/g' deployment.yaml"
+                }
+            }
+            }
+        }
+        stage("Git: Code update and push to Github"){
+            steps {
+                git_push("codilio","main")
+            }
+        }
+    }
+    post {
+        success {
+            script {
+                emailext attachLog: true,
+                from: 'pratyushpragyey@gmail.com',
+                subject: "Codilio Application has been updated and deployed - '${currentBuild.result}'",
+                body: """
+                    <html>
+                    <body>
+                        <div style="background-color: #FFA07A; padding: 10px; margin-bottom: 10px;">
+                            <p style="color: black; font-weight: bold;">Project: ${env.JOB_NAME}</p>
+                        </div>
+                        <div style="background-color: #90EE90; padding: 10px; margin-bottom: 10px;">
+                            <p style="color: black; font-weight: bold;">Build Number: ${env.BUILD_NUMBER}</p>
+                        </div>
+                        <div style="background-color: #87CEEB; padding: 10px; margin-bottom: 10px;">
+                            <p style="color: black; font-weight: bold;">URL: ${env.BUILD_URL}</p>
+                        </div>
+                    </body>
+                    </html>
+            """,
+            to: 'eyepatch2747@gmail.com',
+            mimeType: 'text/html'
+            }
+        }
+        failure {
+            script {
+                emailext attachLog: true,
+                from: 'pratyushpragyey@gmail.com',
+                subject: "Codilio Application build failed - '${currentBuild.result}'",
+                body: """
+                    <html>
+                    <body>
+                        <div style="background-color: #FFA07A; padding: 10px; margin-bottom: 10px;">
+                            <p style="color: black; font-weight: bold;">Project: ${env.JOB_NAME}</p>
+                        </div>
+                        <div style="background-color: #90EE90; padding: 10px; margin-bottom: 10px;">
+                            <p style="color: black; font-weight: bold;">Build Number: ${env.BUILD_NUMBER}</p>
+                        </div>
+                    </body>
+                    </html>
+            """,
+            to: 'eyepatch2747@gmail.com',
+            mimeType: 'text/html'
+            }
+        }
+    }
+}
