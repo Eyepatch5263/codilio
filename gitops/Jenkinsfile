@@ -1,9 +1,7 @@
 @Library("Shared") _
 
 pipeline {
-    agent {
-        label "any"
-    }
+    agent any
     parameters {
         string (name: "DOCKER_IMAGE_TAG", defaultValue: "", description: "Docker Image Tag built by the CI")
     }

@@ -1,5 +1,5 @@
 # Stage 1: Builder
-FROM node:20 AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
@@ -14,14 +14,6 @@ COPY . .
 
 # Build the Next.js application
 RUN npm run build
-
-# Stage 2: Runner
-FROM node:20-alpine AS runner
-
-WORKDIR /app
-
-# Copy the built application from the builder stage
-COPY --from=builder /app ./
 
 # Expose the port the app runs on
 EXPOSE 3000
