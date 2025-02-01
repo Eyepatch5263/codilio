@@ -39,4 +39,3 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.t
 /terraform/terraform.tfvars
-/kubernetes/secrets.yml

@@ -29,7 +29,7 @@ pipeline {
             steps {
             script{
                 dir("kubernetes"){
-                sh "sed -i 's/codilio.*/codilio:${params.DOCKER_IMAGE_TAG}/g' deployment.yaml"
+                sh "sed -i 's/codilio.*/codilio:${params.DOCKER_IMAGE_TAG}/g' codilio-deployment.yaml"
                 }
             }
             }
