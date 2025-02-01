@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: codilio
-        image: eyepatch5263/codilio-beta:v1.0
+        image: eyepatch5263/codilio:v1.0
         ports:
         - containerPort: 3000
         resources:

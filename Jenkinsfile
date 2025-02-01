@@ -2,11 +2,11 @@
 
 pipeline {
     agent any
-    enviroment {
-        SONAR_HOME = tool "SonarQube"
-    }
     parameters {
-        string (name: "DOCKER_IMAGE_TAG", defaultValue: "", description: "Docker Image Tag of the built by the latest push.")
+        string (name: "DOCKER_IMAGE_TAG", defaultValue: "", description: "Docker Image Tag")
+    }
+    environment {
+        SONAR_HOME = tool "sonar"
     }
     stages {
         stage("Starting...") {
@@ -33,11 +33,11 @@ pipeline {
         stage("Cloning Code") {
             steps {
                 script {
-                    clone("https://github.com/Eyepatch5263/codilio.git", "main")
+                    clone_with_cred("codilio","main")
                 }
             }
         }
-        stage("Trivy: Filesystem Scan") {
+        stage("Trivy: FIlesystem Scan") {
             steps {
                 script {
                     trivy_scan()
@@ -57,28 +57,26 @@ pipeline {
         stage("SonarQube: Code Analysis") {
             steps {
                 script {
-                    sonar_analysis("SonarQube","codilio","codilio")
+                    sonarqube_analysis("sonar","codilio","codilio")
                 }
             }
         }
         stage ("SonarQube: Code Quality Gate"){
             steps {
-                script {
-                    sonarqube_code_quality()
-                }
+                sonarqube_code_quality()
             }
         }
         stage("Build Docker Image") {
             steps {
                 script {
-                    docker_build("codilio-beta", "v1.0", "eyepatch5263")
+                    docker_build("codilio-beta", params.DOCKER_IMAGE_TAG, "eyepatch5263")
                 }
             }
         }
         stage("Push to Docker Hub") {
             steps {
                 script {
-                    docker_push("codilio-beta", "v1.0", "eyepatch5263")
+                    docker_push("codilio-beta", params.DOCKER_IMAGE_TAG, "eyepatch5263")
                 }
             }
         }
@@ -93,8 +91,11 @@ pipeline {
     }
     post {
         success {
+            script {
+                sh 'ls -la'
+            }
             echo "Pipeline executed successfully"
-            archiveAtchifacts artifacts: "*.xml", followSymlinks: false
+            archiveArtifacts artifacts: "*.xml", followSymlinks: false
             build job: "Codilio-CD", parameters: [
                 string(name: "DOCKER_IMAGE_TAG", value: "${params.DOCKER_IMAGE_TAG}")
             ]

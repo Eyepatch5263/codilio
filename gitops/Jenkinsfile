@@ -14,7 +14,7 @@ pipeline {
         stage("Cloning Code") {
             steps {
                 script {
-                    clone("https://github.com/Eyepatch5263/codilio.git", "main")
+                    clone_with_cred("codilio","main")
                 }
             }
         }
@@ -29,7 +29,7 @@ pipeline {
             steps {
             script{
                 dir("kubernetes"){
-                sh "sed -i 's/codilio-beta.*/codilio-beta:${params.DOCKER_IMAGE_TAG}/g' deployment.yaml"
+                sh "sed -i 's/codilio.*/codilio:${params.DOCKER_IMAGE_TAG}/g' deployment.yaml"
                 }
             }
             }
