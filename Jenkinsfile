@@ -63,20 +63,22 @@ pipeline {
         }
         stage ("SonarQube: Code Quality Gate"){
             steps {
-                sonarqube_code_quality()
+                script{
+                waitForQualityGate abortPipeline: false, credentialsId: "sonar"
+                }
             }
         }
         stage("Build Docker Image") {
             steps {
                 script {
-                    docker_build("codilio-beta", params.DOCKER_IMAGE_TAG, "eyepatch5263")
+                    docker_build("codilio-beta", "v1.0", "eyepatch5263")
                 }
             }
         }
         stage("Push to Docker Hub") {
             steps {
                 script {
-                    docker_push("codilio-beta", params.DOCKER_IMAGE_TAG, "eyepatch5263")
+                    docker_push("codilio-beta", "v1.0", "eyepatch5263")
                 }
             }
         }
