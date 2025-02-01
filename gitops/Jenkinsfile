@@ -3,10 +3,10 @@
 pipeline {
     agent any
     parameters {
-        string(name: "DOCKER_IMAGE_TAG", defaultValue: "", description: "Docker Image Tag built by the CI")
+        string (name: "DOCKER_IMAGE_TAG", defaultValue: "", description: "Docker Image Tag built by the CI")
     }
     stages {
-        stage("Workspace Cleanup") {
+        stage ("Workspace Cleanup"){
             steps {
                 cleanWs()
             }
@@ -14,33 +14,29 @@ pipeline {
         stage("Cloning Code") {
             steps {
                 script {
-                    clone_with_cred("codilio", "main")
+                    clone_with_cred("codilio","main")
                 }
             }
         }
-        stage("Verify: Docker Image Tags") {
+        stage("Verify: Docker Image Tags"){
             steps {
                 script {
-                    echo "DOCKER_IMAGE_TAG: ${params.DOCKER_IMAGE_TAG}"
+                    echo "DOCKER_IMAGE_TAG: ${params.DOCKER_IMAGE_TAG}}"
                 }
             }
         }
-        stage("Update: Kubernetes Manifests") {
+        stage("Update: Kubernetes Manifests"){
             steps {
-                dir("kubernetes") {
-                    script {
-                        sh """
-                        sed -i 's|image: codilio-beta.*|image: codilio-beta:${params.DOCKER_IMAGE_TAG}|' codilio-deployment.yml
-                        """
-                    }
+            script{
+                dir("kubernetes"){
+                sh "sed -i 's/codilio-beta.*/codilio-beta:${params.DOCKER_IMAGE_TAG}/g' codilio-deployment.yaml"
                 }
             }
+            }
         }
-        stage("Git: Code update and push to Github") {
+        stage("Git: Code update and push to Github"){
             steps {
-                script {
-                    git_push("codilio", "main")
-                }
+                git_push("codilio","main")
             }
         }
     }
@@ -49,7 +45,7 @@ pipeline {
             script {
                 emailext attachLog: true,
                 from: 'pratyushpragyey@gmail.com',
-                subject: "Wanderlust Application has been updated and deployed - '${currentBuild.result}'",
+                subject: "Codilio Application has been updated and deployed - '${currentBuild.result}'",
                 body: """
                     <html>
                     <body>
@@ -65,15 +61,15 @@ pipeline {
                     </body>
                     </html>
             """,
-            to: 'pratyushpragyey@gmail.com',
+            to: 'eyepatch2747@gmail.com',
             mimeType: 'text/html'
             }
         }
-      failure {
+        failure {
             script {
                 emailext attachLog: true,
                 from: 'pratyushpragyey@gmail.com',
-                subject: "Wanderlust Application build failed - '${currentBuild.result}'",
+                subject: "Codilio Application build failed - '${currentBuild.result}'",
                 body: """
                     <html>
                     <body>
@@ -86,10 +82,9 @@ pipeline {
                     </body>
                     </html>
             """,
-            to: 'pratyushpragyey@gmail.com',
+            to: 'eyepatch2747@gmail.com',
             mimeType: 'text/html'
             }
         }
-        
     }
 }
