@@ -1,26 +1,26 @@
-# Codilio
-
-Codilio is a project designed to [briefly describe the purpose of your project]. This README provides an overview of the project, how to set it up, and how to contribute.
-
 ## Table of Contents
 
 - [Introduction](#introduction)
 - [Features](#features)
 - [Installation](#installation)
-- [Usage](#usage)
 - [Configuration](#configuration)
+- [Deployment](#deployment)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
-Codilio is a [briefly describe what your project does]. It aims to [describe the main goal or purpose of your project].
+Codilio is a SaaS project where users can perform code execution for free for one language, JavaScript. The platform offers 9 other languages which users can access by paying a small amount. Users can keep track of their code executions in their profile section and see stats like different code languages, most favorite language, saved code snippets, and total code runs. They can also share snippets, star any snippets to save them for later use, and comment on any code snippet.
+
 
 ## Features
 
-- Feature 1: [Describe feature 1]
-- Feature 2: [Describe feature 2]
-- Feature 3: [Describe feature 3]
+- Free code execution for JavaScript
+- Access to 9 additional languages with a small fee
+- Track code executions in the profile section
+- View stats like different code languages, most favorite language, saved code snippets, and total code runs
+- Share code snippets
+- Star snippets to save them for later use
+- Comment on any code snippet
 
 ## Installation
 
