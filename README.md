@@ -7,7 +7,6 @@
 - [Introduction](#introduction)
 - [Features](#features)
 - [Local-Setup](#local)
-- [Configuration](#configuration)
 - [Deployment](#deployment)
 - [Contributing](#contributing)
 
@@ -67,4 +66,5 @@ To get started with Codilio, follow these steps:
    ```sh
    npm run dev
    ```
-   
+      
+
