@@ -1,3 +1,5 @@
+![Codilio Screenshot](https://asset.cloudinary.com/dvnrlqqpq/b478e68f8fc5c5bc1eb2c4efdd4fff07)
+
 ## Table of Contents
 
 - [Introduction](#introduction)
