@@ -1,0 +1,156 @@
+Started by upstream project "Codilio-CI" build number 100
+originally caused by:
+ Started by user Pratyush
+Loading library Shared@main
+Attempting to resolve main from remote references...
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git ls-remote -h -- https://github.com/Eyepatch5263/jenkins-shared-library # timeout=10
+Found match: refs/heads/main revision 243a2e20a16dae968c9a92b7e2a066fe7f7b5980
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/Codilio-CD@libs/2380d1a3c039eef5a895b0e071722bc101f90deb8516bcf493d2cc58584abff8/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/Eyepatch5263/jenkins-shared-library # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/Eyepatch5263/jenkins-shared-library
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git fetch --no-tags --force --progress -- https://github.com/Eyepatch5263/jenkins-shared-library +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision 243a2e20a16dae968c9a92b7e2a066fe7f7b5980 (main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 243a2e20a16dae968c9a92b7e2a066fe7f7b5980 # timeout=10
+Commit message: "Update git_push.groovy"
+ > git rev-list --no-walk 243a2e20a16dae968c9a92b7e2a066fe7f7b5980 # timeout=10
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/Codilio-CD
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Workspace Cleanup)
+[Pipeline] cleanWs
+[WS-CLEANUP] Deleting project workspace...
+[WS-CLEANUP] Deferred wipeout is used...
+[WS-CLEANUP] done
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Cloning Code)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] withCredentials
+Masking supported pattern matches of $GIT_TOKEN
+[Pipeline] {
+[Pipeline] sh
++ [ -d codilio ]
++ git clone --branch main https://eyepatch5263:****@github.com/Eyepatch5263/codilio.git .
+Cloning into '.'...
++ npm install --legacy-peer-deps
+npm WARN deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm WARN deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+npm WARN deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+npm WARN deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+npm WARN deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm WARN deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 464 packages, and audited 465 packages in 33s
+
+162 packages are looking for funding
+  run `npm fund` for details
+
+1 moderate severity vulnerability
+
+To address all issues, run:
+  npm audit fix --force
+
+Run `npm audit` for details.
++ git config --global --add safe.directory /var/lib/jenkins/workspace/Codilio-CI/codilio
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Verify: Docker Image Tags)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] echo
+DOCKER_IMAGE_TAG: v2.0
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Update: Kubernetes Manifests)
+[Pipeline] dir
+Running in /var/lib/jenkins/workspace/Codilio-CD/kubernetes
+[Pipeline] {
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ sed -i s|image: codilio-beta.*|image: codilio-beta:v2.0| codilio-deployment.yml
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Git: Code update and push to Github)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] withCredentials
+Masking supported pattern matches of $GIT_TOKEN
+[Pipeline] {
+[Pipeline] sh
+Warning: A secret was passed to "sh" using Groovy String interpolation, which is insecure.
+		 Affected argument(s) used the following variable(s): [GIT_TOKEN]
+		 See https://jenkins.io/redirect/groovy-string-interpolation for details.
++ echo Checking repository status:
+Checking repository status:
++ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
++ echo Configuring Git user:
+Configuring Git user:
++ git config --global user.email pratyushpragyey.com
++ git config --global user.name Eyepatch5263
++ echo Adding changes to Git:
+Adding changes to Git:
++ git add .
++ echo Committing changes:
+Committing changes:
++ git commit -m Updated environment variables
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
++ echo No changes to commit
+No changes to commit
++ echo Pushing changes to GitHub:
+Pushing changes to GitHub:
++ git push https://eyepatch5263:****@github.com/eyepatch5263/codilio.git main
+Everything up-to-date
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] emailext
+Sending email to: pratyushpragyey@gmail.com
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
