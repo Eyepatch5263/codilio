@@ -168,8 +168,4 @@ Set these in `.env.local` (for local) or in K8s secrets (for production):
 3. Open a PR with a clear description
 4. Ensure all CI checks pass
 
----
 
-## License
-
-MIT
