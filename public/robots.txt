@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://eyepatch5263.me/sitemap.xml
